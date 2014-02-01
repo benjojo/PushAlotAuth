@@ -1,15 +1,15 @@
-PushAlotAuth
+PushOverAuth
 ============
 
-A service that will send you a "Pushalot" notification when any kind of auth happens on a Linux system.
+A service that will send you a "PushOver" notification when any kind of auth happens on a Linux system.
 
-![Say it with pixels](http://i.imgur.com/FVyjd5b.png)
+![Say it with pixels](http://i.imgur.com/tz92Qec.png)
 
 ## Don't want to go though the setup with go?
 
 I can relate with that. Just download a precompiled version for your OS/Arch in the releases and run like so
 
-`./PushAlotAuth`
+`./PushOverAuth`
 
 After it makes you a first time config, edit that config and test that it works by running it again.
 

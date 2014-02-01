@@ -6,25 +6,34 @@ import (
 	"strings"
 )
 
-func main() {
-	watchtarget := "/var/log/auth.log"
-	log.Println("PushAlot Auth Notifier")
-	t, err := tail.TailFile(watchtarget, tail.Config{
+func WatchFileSystem(path string, triggerwords []string, token string) {
+	t, err := tail.TailFile(path, tail.Config{
 		Follow: true,
 		ReOpen: true})
 	if err != nil {
-		log.Fatal("Uhh I can't read /var/log/auth.log ... Maybe I am not root? Maybe you are on windows?")
+		log.Fatalf("Uhh I can't read %s ... Maybe I am not root? Maybe you are on windows?", path)
 	}
-	lc := CountLines(watchtarget) - 1
+	lc := CountLines(path) - 1
 	cnt := 0
 	for line := range t.Lines {
 		if cnt < lc {
 			cnt++
 		} else {
-			if strings.Contains(line.Text, "Accepted publickey") {
-				SendPushAlot("Login from daring", "lolno", line.Text)
+			for _, v := range triggerwords {
+				if strings.Contains(line.Text, v) {
+					SendPushAlot("Login from daring", token, line.Text)
+				}
 			}
 			log.Println(line.Text)
 		}
+	}
+}
+
+func main() {
+	log.Println("PushAlot Auth Notifier")
+	cfg := GetCFG()
+	log.Println(cfg.Token)
+	for _, v := range cfg.Watches {
+		go WatchFileSystem(v.Path, v.TriggerWords, cfg.Token)
 	}
 }

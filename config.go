@@ -20,6 +20,15 @@ type WatchFile struct {
 func GetDefaultConfig() GConfig {
 	var tfg GConfig
 	tfg.Token = "Fillmein"
+	tfg.Watches = make([]WatchFile, 0)
+	defaultwatch := WatchFile{
+		Path: "/var/log/auth.log",
+		TriggerWords: []string{
+			"Accepted publickey",
+			"Accepted password",
+		},
+	}
+	tfg.Watches = append(tfg.Watches, defaultwatch)
 	return tfg
 }
 

@@ -26,7 +26,6 @@ func WatchFileSystem(path string, triggerwords []string, token string) {
 					SendPushAlot("Login from server", token, line.Text)
 				}
 			}
-			log.Println(line.Text)
 		}
 	}
 }

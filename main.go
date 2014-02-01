@@ -24,7 +24,7 @@ func WatchFileSystem(path string, triggerwords []string, token string) {
 		} else {
 			for _, v := range triggerwords {
 				if strings.Contains(line.Text, v) {
-					SendPushAlot(fmt.Sprintf("Log from %s", GetHostName()), token, line.Text)
+					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, line.Text)
 				}
 			}
 		}
@@ -32,7 +32,7 @@ func WatchFileSystem(path string, triggerwords []string, token string) {
 }
 
 func main() {
-	log.Println("PushAlot Auth Notifier")
+	log.Println("PushOver Auth Notifier")
 	cfg := GetCFG()
 	for _, v := range cfg.Watches {
 		log.Printf("Setting up watching for %s", v.Path)

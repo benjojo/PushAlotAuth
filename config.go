@@ -35,13 +35,13 @@ func GetDefaultConfig() GConfig {
 func CheckIfResetConfig(args []string) {
 	if len(args) == 2 {
 		if args[1] == "reset" {
-			e := os.Remove("./.pushalotcfg.json")
+			e := os.Remove("./.pushovercfg.json")
 			if e != nil {
 				log.Fatal("Could not remove current config file. Permissions issue?")
 			}
 			Default := GetDefaultConfig()
 			out, e := json.Marshal(Default)
-			e = ioutil.WriteFile("./.pushalotcfg.json", out, 600)
+			e = ioutil.WriteFile("./.pushovercfg.json", out, 600)
 			if e != nil {
 				log.Fatal("cannot open settings file :(")
 			}
@@ -51,11 +51,11 @@ func CheckIfResetConfig(args []string) {
 }
 
 func GetCFG() GConfig {
-	b, e := ioutil.ReadFile("./.pushalotcfg.json")
+	b, e := ioutil.ReadFile("./.pushovercfg.json")
 	tfg := GetDefaultConfig()
 	if e != nil {
 		out, e := json.Marshal(tfg)
-		e = ioutil.WriteFile("./.pushalotcfg.json", out, 600)
+		e = ioutil.WriteFile("./.pushovercfg.json", out, 600)
 		if e != nil {
 			log.Fatal("cannot open settings file :(")
 		}
@@ -64,10 +64,10 @@ func GetCFG() GConfig {
 
 	e = json.Unmarshal(b, &tfg)
 	if e != nil {
-		log.Fatalf("Could not parse config settings. You may have to remove ./.pushalotcfg.json")
+		log.Fatalf("Could not parse config settings. You may have to remove ./.pushovercfg.json")
 	}
 	if tfg.Token == "Fillmein" {
-		log.Fatal("You need to fill in the config settings in ./.pushalotcfg.json")
+		log.Fatal("You need to fill in the config settings in ./.pushovercfg.json")
 	}
 	return tfg
 }

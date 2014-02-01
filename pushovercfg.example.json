@@ -1,0 +1,13 @@
+{
+  "DeviceToken": "DevToken",
+  "Application": "Apptoken",
+  "Watches": [
+    {
+      "Path": "/var/log/auth.log",
+      "TriggerWords": [
+        "Accepted publickey",
+        "Accepted password"
+      ]
+    }
+  ]
+}

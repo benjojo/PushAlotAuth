@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/ActiveState/tail"
 	"log"
 	"strings"
@@ -23,7 +24,7 @@ func WatchFileSystem(path string, triggerwords []string, token string) {
 		} else {
 			for _, v := range triggerwords {
 				if strings.Contains(line.Text, v) {
-					SendPushAlot("Login from server", token, line.Text)
+					SendPushAlot(fmt.Sprintf("Log from %s", GetHostName()), token, line.Text)
 				}
 			}
 		}

@@ -23,7 +23,8 @@ nohup ./PushAlotAuth &
 
 ```json
 {
-  "Token": "Fillmein",
+  "DeviceToken": "DevToken",
+  "Application": "Apptoken",
   "Watches": [
     {
       "Path": "/var/log/auth.log",

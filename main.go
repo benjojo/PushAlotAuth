@@ -38,7 +38,5 @@ func main() {
 		log.Printf("Setting up watching for %s", v.Path)
 		go WatchFileSystem(v.Path, v.TriggerWords, cfg.Token)
 	}
-	for {
-
-	}
+	select {}
 }

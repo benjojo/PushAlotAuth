@@ -16,7 +16,7 @@ After it makes you a first time config, edit that config and test that it works 
 After that you can run it "forever" by doing
 
 ```bash
-nohup ./PushAlotAuth &
+nohup ./PushOverAuth &
 ```
 
 ##Sample setup

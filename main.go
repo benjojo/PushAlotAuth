@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ActiveState/tail"
 	"log"
+	"strings"
 )
 
 func main() {
@@ -20,6 +21,9 @@ func main() {
 		if cnt < lc {
 			cnt++
 		} else {
+			if strings.Contains(line.Text, "Accepted publickey") {
+				SendPushAlot("Login from daring", "lolno", line.Text)
+			}
 			log.Println(line.Text)
 		}
 	}

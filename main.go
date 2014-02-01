@@ -7,7 +7,11 @@ import (
 	"strings"
 )
 
+<<<<<<< HEAD
 func WatchFileSystem(path string, triggerwords []string, token string, banner string) {
+=======
+func WatchFileSystem(path string, triggerwords []string, token string, user string) {
+>>>>>>> 83246f2... yay it should work
 
 	t, err := tail.TailFile(path, tail.Config{
 		Follow: true,
@@ -29,7 +33,7 @@ func WatchFileSystem(path string, triggerwords []string, token string, banner st
 						title = banner
 					}
 					SendPushAlot(title, token, line.Text)
-					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, line.Text)
+					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, user, line.Text)
 				}
 			}
 		}
@@ -41,7 +45,7 @@ func main() {
 	cfg := GetCFG()
 	for _, v := range cfg.Watches {
 		log.Printf("Setting up watching for %s", v.Path)
-		go WatchFileSystem(v.Path, v.TriggerWords, cfg.Token, v.Banner)
+		go WatchFileSystem(v.Path, v.TriggerWords, cfg.AppToken, cfg.UserToken)
 	}
 	select {}
 }

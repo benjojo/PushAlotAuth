@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func WatchFileSystem(path string, triggerwords []string, token string) {
+func WatchFileSystem(path string, triggerwords []string, token string, user string) {
 
 	t, err := tail.TailFile(path, tail.Config{
 		Follow: true,
@@ -24,7 +24,7 @@ func WatchFileSystem(path string, triggerwords []string, token string) {
 		} else {
 			for _, v := range triggerwords {
 				if strings.Contains(line.Text, v) {
-					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, line.Text)
+					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, user, line.Text)
 				}
 			}
 		}
@@ -36,7 +36,7 @@ func main() {
 	cfg := GetCFG()
 	for _, v := range cfg.Watches {
 		log.Printf("Setting up watching for %s", v.Path)
-		go WatchFileSystem(v.Path, v.TriggerWords, cfg.Token)
+		go WatchFileSystem(v.Path, v.TriggerWords, cfg.AppToken, cfg.UserToken)
 	}
 	select {}
 }

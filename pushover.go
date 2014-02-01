@@ -5,12 +5,12 @@ import (
 	"net/url"
 )
 
-func SendPushOver(Title string, Token string, User string, Body string) {
+func SendPushOver(Title string, Token string, User string, Message string) {
 	http.PostForm("https://api.pushover.net/1/messages.json",
 		url.Values{
-			"token": {Token},
-			"Body": {Body},
-			"Title": {Title},
-		}
-	)
+			"token":   {Token},
+			"user":    {User},
+			"message": {Message},
+			"Title":   {Title},
+		})
 }

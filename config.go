@@ -14,6 +14,7 @@ type GConfig struct {
 
 type WatchFile struct {
 	Path         string
+	Banner       string
 	TriggerWords []string
 }
 

@@ -3,7 +3,7 @@ PushOverAuth
 
 A service that will send you a "PushOver" notification when any kind of auth happens on a Linux system.
 
-![Say it with pixels](http://i.imgur.com/iFqlwII.png)
+![Say it with pixels](http://i.imgur.com/5VSbFC9.png)
 
 ## Don't want to go though the setup with go?
 

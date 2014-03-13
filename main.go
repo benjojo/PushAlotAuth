@@ -4,17 +4,21 @@ import (
 	"fmt"
 	"github.com/ActiveState/tail"
 	"log"
+	"regexp"
 	"strings"
 )
 
 func WatchFileSystem(path string, triggerwords []string, token string, user string) {
+	fRgx, err := regexp.Compile("[\\w\\d]+ from [\\.\\d]+")
+	if err != nil {
+		log.Fatalf("The regex didn't compile. This shouldn't be happening.")
+	}
 
-	t, err := tail.TailFile(path, tail.Config{
-		Follow: true,
-		ReOpen: true})
+	t, err := tail.TailFile(path, tail.Config{ Follow: true, ReOpen: true})
 	if err != nil {
 		log.Fatalf("Uhh I can't read %s ... Maybe I am not root? Maybe you are on windows?", path)
 	}
+
 	lc := CountLines(path) - 1
 	cnt := 0
 	log.Printf("Now watching %s", path)
@@ -24,7 +28,13 @@ func WatchFileSystem(path string, triggerwords []string, token string, user stri
 		} else {
 			for _, v := range triggerwords {
 				if strings.Contains(line.Text, v) {
-					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, user, line.Text)
+					if fRgx.Match([]byte(line.Text)) {
+						matches := strings.Split(fRgx.FindString(line.Text), " from ")
+						notice := fmt.Sprintf("%s@%s logged into %s", matches[0], matches[1], GetHostName())
+						SendPushOver(fmt.Sprintf("Login at %s", GetHostName()), token, user, notice)
+					} else {
+						SendPushOver(fmt.Sprintf("Login at %s", GetHostName()), token, user, line.Text)
+					}
 				}
 			}
 		}

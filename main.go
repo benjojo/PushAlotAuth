@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"github.com/ActiveState/tail"
 	"log"
+	"regexp"
 	"strings"
 )
 
-<<<<<<< HEAD
-func WatchFileSystem(path string, triggerwords []string, token string, banner string) {
-=======
-func WatchFileSystem(path string, triggerwords []string, token string, user string) {
->>>>>>> 83246f2... yay it should work
+func WatchFileSystem(path string, triggerwords []string, token string, user string, banner string) {
 
-	t, err := tail.TailFile(path, tail.Config{
-		Follow: true,
-		ReOpen: true})
+	fRgx, err := regexp.Compile("[\\w\\d]+ from [\\.\\d]+")
+	if err != nil {
+		log.Fatalf("The regex didn't compile. This shouldn't be happening.")
+	}
+
+	t, err := tail.TailFile(path, tail.Config{Follow: true, ReOpen: true})
 	if err != nil {
 		log.Fatalf("Uhh I can't read %s ... Maybe I am not root? Maybe you are on windows?", path)
 	}
+
 	lc := CountLines(path) - 1
 	cnt := 0
 	log.Printf("Now watching %s", path)
@@ -28,12 +29,20 @@ func WatchFileSystem(path string, triggerwords []string, token string, user stri
 		} else {
 			for _, v := range triggerwords {
 				if strings.Contains(line.Text, v) {
+
 					title := fmt.Sprintf("Log from %s", GetHostName())
 					if banner != "" {
 						title = banner
 					}
 					SendPushAlot(title, token, line.Text)
-					SendPushOver(fmt.Sprintf("Log from %s", GetHostName()), token, user, line.Text)
+
+					if fRgx.Match([]byte(line.Text)) {
+						matches := strings.Split(fRgx.FindString(line.Text), " from ")
+						notice := fmt.Sprintf("%s@%s logged into %s", matches[0], matches[1], GetHostName())
+						SendPushOver(fmt.Sprintf("Login at %s", GetHostName()), token, user, notice)
+					} else {
+						SendPushOver(fmt.Sprintf("Login at %s", GetHostName()), token, user, line.Text)
+					}
 				}
 			}
 		}

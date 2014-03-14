@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func WatchFileSystem(path string, triggerwords []string, token string, user string) {
+func WatchFileSystem(path string, triggerwords []string, ntf Notifiers) {
 	fRgx, err := regexp.Compile("[\\w\\d]+ from [\\.\\d]+")
 	if err != nil {
-		log.Fatalf("The regex didn't compile. This shouldn't be happening.")
+		log.Fatalf("The regex didn't compile. This shouldn't be happening...")
 	}
 
 	t, err := tail.TailFile(path, tail.Config{ Follow: true, ReOpen: true})
@@ -31,9 +31,9 @@ func WatchFileSystem(path string, triggerwords []string, token string, user stri
 					if fRgx.Match([]byte(line.Text)) {
 						matches := strings.Split(fRgx.FindString(line.Text), " from ")
 						notice := fmt.Sprintf("%s@%s logged into %s", matches[0], matches[1], GetHostName())
-						SendPushOver(fmt.Sprintf("Login at %s", GetHostName()), token, user, notice)
+						Push(ntf, fmt.Sprintf("Login at %s", GetHostName()), notice)
 					} else {
-						SendPushOver(fmt.Sprintf("Login at %s", GetHostName()), token, user, line.Text)
+						Push(ntf, fmt.Sprintf("Login at %s", GetHostName()), line.Text)
 					}
 				}
 			}
@@ -46,7 +46,7 @@ func main() {
 	cfg := GetCFG()
 	for _, v := range cfg.Watches {
 		log.Printf("Setting up watching for %s", v.Path)
-		go WatchFileSystem(v.Path, v.TriggerWords, cfg.AppToken, cfg.UserToken)
+		go WatchFileSystem(v.Path, v.TriggerWords, cfg.Notifications)
 	}
 	select {}
 }

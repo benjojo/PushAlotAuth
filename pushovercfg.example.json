@@ -1,8 +1,8 @@
 {
    "Notifications":{
       "PushOver":{
-         "UserToken":"usertoken",
-         "AppToken":"apptoken"
+         "UserToken":"token",
+         "AppToken":"token"
       },
       "PushAlot":{
          "Token":"token"

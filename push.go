@@ -6,17 +6,22 @@ import (
 )
 
 func Push(ntf Notifiers, Title string, Message string) {
-	if IsToken(ntf.PushOver.UserToken) && IsToken(ntf.PushOver.AppToken) {
+	if CanPushOver(ntf) {
 		SendPushOver(Title, Message, ntf.PushOver.AppToken, ntf.PushOver.UserToken)
-	} else if IsToken(ntf.PushAlot.Token) {
+	}
+	if CanPushAlot(ntf) {
 		SendPushAlot(Title, Message, ntf.PushAlot.Token)
 	}
 }
 
-func IsToken(token string) bool {
+func IsTokenSet(token string) bool {
 	return token != "" && token != "token"
 }
 
+
+func CanPushOver(ntf Notifiers) bool {
+	return IsTokenSet(ntf.PushOver.UserToken) && IsTokenSet(ntf.PushOver.AppToken)
+}
 func SendPushOver(Title string, Message string, Token string, User string) {
 	http.PostForm("https://api.pushover.net/1/messages.json",
 		url.Values{
@@ -27,6 +32,10 @@ func SendPushOver(Title string, Message string, Token string, User string) {
 		})
 }
 
+
+func CanPushAlot(ntf Notifiers) bool {
+	return IsTokenSet(ntf.PushAlot.Token)
+}
 func SendPushAlot(Title string, Body string, Token string) {
 	http.PostForm("https://pushalot.com/api/sendmessage",
 		url.Values{

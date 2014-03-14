@@ -12,5 +12,16 @@ func SendPushOver(Title string, Token string, User string, Message string) {
 			"user":    {User},
 			"message": {Message},
 			"Title":   {Title},
-		})
+		}
+	)
+}
+
+func SendPushAlot(Title string, Token string, Body string) {
+	http.PostForm("https://pushalot.com/api/sendmessage",
+		url.Values{
+			"AuthorizationToken": {Token},
+			"Body": {Body},
+			"Title": {Title},
+		}
+	)
 }

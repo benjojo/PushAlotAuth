@@ -10,8 +10,7 @@ import (
 var cfgfile string = "./pushovercfg.json"
 
 type GConfig struct {
-	UserToken string
-	AppToken  string
+	Notifications Notifiers
 	Watches   []WatchFile
 }
 
@@ -21,10 +20,23 @@ type WatchFile struct {
 	TriggerWords []string
 }
 
+type Notifiers struct {
+	PushOver NPushOver
+	PushAlot NPushAlot
+}
+
+/* Notifiers */
+type NPushOver struct {
+	UserToken string
+	AppToken  string
+}
+
+type NPushAlot struct {
+	Token string
+}
+
 func GetDefaultConfig() GConfig {
 	var tfg GConfig
-	tfg.UserToken = "Fillmein"
-	tfg.AppToken = "Fillmein"
 	tfg.Watches = make([]WatchFile, 0)
 	defaultwatch := WatchFile{
 		Path: "/var/log/auth.log",
@@ -34,6 +46,19 @@ func GetDefaultConfig() GConfig {
 		},
 	}
 	tfg.Watches = append(tfg.Watches, defaultwatch)
+
+	var nfr Notifiers
+	var pusho NPushOver
+	var pusha NPushAlot
+
+	pusho.UserToken = "token"
+	pusho.AppToken = "token"
+	nfr.PushOver = pusho
+
+	pusha.Token = "token"
+	nfr.PushAlot = pusha
+
+	tfg.Notifications = nfr
 	return tfg
 }
 
@@ -71,8 +96,8 @@ func GetCFG() GConfig {
 	if e != nil {
 		log.Fatalf("Could not parse config settings. You may have to remove ./.pushovercfg.json")
 	}
-	if tfg.UserToken == "Fillmein" || tfg.AppToken == "Fillmein" {
+	//if tfg.Notifications.PushOver.UserToken == "Fillmein" || tfg.Notifications.PushOver.AppToken == "Fillmein" {
 		log.Fatal("You need to fill in the config settings in %s", cfgfile)
-	}
+	//}
 	return tfg
 }

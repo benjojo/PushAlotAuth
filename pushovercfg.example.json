@@ -1,13 +1,20 @@
 {
-  "DeviceToken": "DevToken",
-  "Application": "Apptoken",
-  "Watches": [
-    {
-      "Path": "/var/log/auth.log",
-      "TriggerWords": [
-        "Accepted publickey",
-        "Accepted password"
-      ]
-    }
-  ]
+   "Notifications":{
+      "PushOver":{
+         "UserToken":"usertoken",
+         "AppToken":"apptoken"
+      },
+      "PushAlot":{
+         "Token":"token"
+      }
+   },
+   "Watches":[
+      {
+         "Path":"/var/log/auth.log",
+         "TriggerWords":[
+            "Accepted publickey",
+            "Accepted password"
+         ]
+      }
+   ]
 }

@@ -95,8 +95,5 @@ func GetCFG() GConfig {
 	if e != nil {
 		log.Fatalf("Could not parse config settings. You may have to remove ./.pushovercfg.json")
 	}
-	//if tfg.Notifications.PushOver.UserToken == "Fillmein" || tfg.Notifications.PushOver.AppToken == "Fillmein" {
-		log.Fatal("You need to fill in the config settings in %s", cfgfile)
-	//}
 	return tfg
 }

@@ -23,16 +23,24 @@ nohup ./PushAlotAuth &
 
 ```json
 {
-  "UserToken": "Usertoken",
-  "AppToken": "Apptoken",
-  "Watches": [
-    {
-      "Path": "/var/log/auth.log",
-      "TriggerWords": [
-        "Accepted publickey",
-        "Accepted password"
-      ]
-    }
-  ]
+   "Notifications":{
+      "PushOver":{
+         "UserToken":"token",
+         "AppToken":"token"
+      },
+      "PushAlot":{
+         "Token":"token"
+      }
+   },
+   "Watches":[
+      {
+         "Path":"/var/log/auth.log",
+         "TriggerWords":[
+            "Accepted publickey",
+            "Accepted password"
+         ]
+      }
+   ]
 }
+
 ```

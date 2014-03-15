@@ -1,4 +1,4 @@
-PushOverAuth
+PushOnAuth
 ============
 
 A service that will send you a "PushOver" notification when any kind of auth happens on a Linux system.

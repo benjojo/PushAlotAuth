@@ -94,12 +94,12 @@ func GetCFG() GConfig {
 
 	e = json.Unmarshal(b, &tfg)
 	if e != nil {
-		log.Fatal("Could not parse config settings. You may have to remove pushovercfg.json")
+		log.Fatalf("Could not parse config settings. You may have to remove %s", cfgfile)
 	}
 
 	var nfc = tfg.Notifications
 	if !CanPushOver(nfc) && !CanPushAlot(nfc) {
-		log.Fatal("Please fill in at least one push service in pushovercfg.json")
+		log.Fatalf("Please fill in at least one push service in %s", cfgfile)
 	}
 
 	return tfg

@@ -28,7 +28,6 @@ func WatchFileSystem(path string, triggerwords []string, ntf Notifiers) { //toke
 		} else {
 			for _, v := range triggerwords {
 				if strings.Contains(line.Text, v) {
-
 					title := fmt.Sprintf("Log from %s", GetHostName())
 					if banner != "" {
 						title = banner
@@ -54,6 +53,7 @@ func main() {
 	for _, v := range cfg.Watches {
 		log.Printf("Setting up watching for %s", v.Path)
 		go WatchFileSystem(v.Path, v.TriggerWords, cfg.Notifications)
+		// go WatchFileSystem(v.Path, v.TriggerWords, cfg.Token, v.Banner)
 	}
 	select {}
 }

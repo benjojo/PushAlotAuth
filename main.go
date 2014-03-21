@@ -44,3 +44,11 @@ func main() {
 	}
 	select {}
 }
+
+func DispatchChan(messages chan string) {
+	title := fmt.Sprintf("Log from %s", GetHostName())
+
+	for a := range messages {
+		SendPushAlot(title, GetCFG().Token, a)
+	}
+}
